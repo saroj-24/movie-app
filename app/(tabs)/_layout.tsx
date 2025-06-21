@@ -1,45 +1,84 @@
-import { Tabs } from 'expo-router';
+import { StyleSheet } from 'react-native';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from 'expo-router';
+import Feather from '@expo/vector-icons/Feather';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { theme } from '@/constant/theme';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const focusedColor = '#483AA0';
+const unfocusedColor = 'black';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const _Layout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarActiveTintColor: focusedColor,
+        tabBarInactiveTintColor: unfocusedColor,
+        tabBarLabelStyle: {
+          fontSize:theme.fontSize.base,       
+          fontFamily:theme.fonts.Noto_Regular, 
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name="home"
+              size={24}
+              color={focused ? focusedColor : unfocusedColor}
+            />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="search"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Search',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name="search"
+              size={24}
+              color={focused ? focusedColor : unfocusedColor}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="saved"
+        options={{
+          title: 'Saved',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="favorite-border"
+              size={24}
+              color={focused ? focusedColor : unfocusedColor}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6
+              name="user"
+              size={24}
+              color={focused ? focusedColor : unfocusedColor}
+            />
+          ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default _Layout;
